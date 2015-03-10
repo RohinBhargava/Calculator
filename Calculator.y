@@ -40,17 +40,23 @@
 				if (yylval.fun->count % 10 == 0)
 					realloc(yylval.fun->cont, (10+yylval.fun->count) * sizeof(var_container *));
 				var_container *v = find_variable(yylval.fun->var, yylval.fun);
+				char *name;
+				double value;
 				yylval.fun->equals = false;
 				if (v == NULL)
 				{
+					name = yylval.fun->var;
 					yylval.fun->cont[yylval.fun->count] = init_vc(yylval.fun->var);
 					yylval.fun->cont[yylval.fun->count]->value = $3;
 					++yylval.fun->count; 
 				}
 
 				else
+				{
+					name = v->name;
 					v->value = $3;
-				printf("%s set to %lf.\n", )
+				}	
+				printf("\"%s\" set to %lf.\n", name, $3);
 		}
 		| expression {
 			yylval.fun->equals = false; 
@@ -163,6 +169,7 @@ var_container* find_variable(char *x, calculator* f)
 
 int main() 
 {
+	printf("Welcome to this calculator! To exit at any time, type \"exit\".\n");
 	yylval.fun = init_function();
 	yyparse();
 	free_func(yylval.fun);
