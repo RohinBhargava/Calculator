@@ -43,8 +43,7 @@
 							yylval.fun->equals = true;
 							return EQUALS; 
 						}
-[a-zA-Z][0-9]*			{	 
-							printf("[%s]\n", yytext);
+[a-zA-Z][0-9]*			{
 							yylval.fun->find = strdup(yytext);
 							if (!yylval.fun->equals)
 								yylval.fun->var = strdup(yytext);

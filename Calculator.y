@@ -110,7 +110,6 @@
 
 	number
 		: VARIABLE { 
-			printf("%s\n", yylval.fun->find);
 			var_container *v = find_variable(yylval.fun->find, yylval.fun);
 			if (v != NULL)
 				$$ = v->value;
