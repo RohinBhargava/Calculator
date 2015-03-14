@@ -59,7 +59,6 @@
 				printf("\"%s\" set to %lf.\n", name, $3);
 		}
 		| expression {
-			yylval.fun->equals = false; 
 			yylval.fun->dub = $1; 
 			printf("%lf\n", yylval.fun->dub);
 		}
@@ -99,26 +98,30 @@
 		| LOG parenthesis { $$ = log10($2); }
 		| SQRT parenthesis { $$ = sqrt($2); }
 		| SUBTRACT parenthesis { $$ = -1 * $2; }
+		| parenthesis prec { $$ = $1 * $2; }
 		| parenthesis { $$ = $1; }
 		;
 
 	parenthesis
 		: LPARENTHESIS expression RPARENTHESIS { $$ = $2; }
-		| number parenthesis { $$ = $1 * $2; }
 		| number { $$ = $1; }
 		;
 
 
 	number
-		: NUMBER { $$ = yylval.fun->dub; }
-		| E { $$ = M_E; }
-		| VARIABLE { 
+		: VARIABLE { 
+			printf("%s\n", yylval.fun->find);
 			var_container *v = find_variable(yylval.fun->find, yylval.fun);
 			if (v != NULL)
 				$$ = v->value;
-			else
+			else 
+			{
+				printf("No such variable \"%s\".\n", yylval.fun->find);
 				$$ = 0;
+			}
 		}
+		| E { $$ = M_E; }
+		| NUMBER { $$ = yylval.fun->dub; }
 		;
 
 %%
