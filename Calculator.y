@@ -98,7 +98,7 @@
 		| LOG parenthesis { $$ = log10($2); }
 		| SQRT parenthesis { $$ = sqrt($2); }
 		| SUBTRACT parenthesis { $$ = -1 * $2; }
-		| parenthesis prec { $$ = $1 * $2; }
+		| prec parenthesis { $$ = $1 * $2; }
 		| parenthesis { $$ = $1; }
 		;
 
